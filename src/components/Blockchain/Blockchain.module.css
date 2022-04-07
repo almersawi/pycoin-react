@@ -1,0 +1,12 @@
+.transactions {
+    border: solid 1px rgb(226, 220, 220);
+}
+
+.transaction {
+    border-bottom: solid 1px rgb(226, 220, 220);
+    padding: 0.5rem;
+}
+
+.transaction p {
+    margin: 0;
+}
