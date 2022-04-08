@@ -4,7 +4,7 @@ import { appActions } from "../../store/app-state";
 import { useSelector } from "react-redux";
 import { GlobalState } from "../../store";
 import API from "../../services/api.service";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { notification } from "antd";
 import { useDispatch } from "react-redux";
 
@@ -23,13 +23,13 @@ const Wallet = () => {
     let wallet;
     try {
       const res = await api.getWallet();
-      wallet = res;
+      wallet = res ?? {};
       showWalletNotificationSuccess(res);
     } catch {
-      wallet = null;
+      wallet = {};
       notification.error({
         message: "Error",
-        description: "Error while getting wallet",
+        description: "No wallet found. Create a wallet first.",
       });
     }
     setGetWalletLoading(false);
@@ -69,6 +69,7 @@ const Wallet = () => {
       ),
     });
   };
+
   return (
     <>
       <div className={classes.container}>
@@ -89,7 +90,7 @@ const Wallet = () => {
             Load Wallet
           </Button>
         </div>
-        <h3>Funds: {wallet.funds ?? 0}</h3>
+        <h3>Funds: {wallet?.funds ?? 0}</h3>
       </div>
       <hr />
     </>

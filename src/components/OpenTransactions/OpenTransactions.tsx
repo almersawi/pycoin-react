@@ -39,6 +39,7 @@ const OpenTransactions = () => {
   return (
     <div>
       <div className="actions_container">
+        <Button loading={loading} disabled={loading} onClick={getOpenTransactions}>Update</Button>
       </div>
       {data.length > 0 && !loading && (
         <Collapse>

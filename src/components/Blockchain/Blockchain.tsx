@@ -1,5 +1,5 @@
 import classes from "./Blockchain.module.css";
-import { Button, Collapse, Empty, Spin } from "antd";
+import { Button, Collapse, Empty, notification, Spin } from "antd";
 import { Block } from "../../models/Block";
 import { useEffect, useMemo, useState } from "react";
 import API from "../../services/api.service";
@@ -11,6 +11,8 @@ const Blockchain = () => {
   const api = useMemo(() => new API(), []);
   const [mineLoading, setMineLoading] = useState(false);
   const [getChainLoading, setGetChainLoading] = useState(false);
+  const [resolveLoading, setResolveLoading] = useState(false);
+
   const requiresUpdate = useSelector((state: GlobalState) => state.app.loadBlockchain)
 
   const dispatch = useDispatch();
@@ -27,6 +29,10 @@ const Blockchain = () => {
       getBlockchain()
     } catch {
       console.error("Error while mining");
+      notification.error({
+        message: "Error while mining",
+        description: "There was some conflicts while mining the block. Try resolve conflicts and try again."
+      })
     }
 
     setMineLoading(false);
@@ -41,6 +47,27 @@ const Blockchain = () => {
     setGetChainLoading(false);
   };
 
+  const resolveConflicts = async () => {
+    setResolveLoading(true)
+    try {
+      const data = await api.resolveConflicts();
+      dispatch(appActions.updateBlockchain(data.chain));
+      dispatch(appActions.updateOpenTransactions(data.open_transactions));
+      notification.success({
+        message: "Blockchain",
+        description: "Conflicts resolved"
+      })
+    }
+    catch (err) {
+      console.log(err)
+      notification.error({
+        message: "Blockchain",
+        description: "Conflicts could not be resolved"
+      })
+    }
+    setResolveLoading(false)
+  }
+
   useEffect(() => {
     getBlockchain()
   }, [requiresUpdate])
@@ -49,8 +76,16 @@ const Blockchain = () => {
   return (
     <div>
       <div className="actions_container">
+      <Button loading={getChainLoading} disabled={getChainLoading} onClick={getBlockchain}>
+          Update
+        </Button>
+
         <Button loading={mineLoading} disabled={mineLoading} onClick={mine} type="dashed">
           Mine Coins
+        </Button>
+
+        <Button loading={resolveLoading} disabled={resolveLoading} onClick={resolveConflicts} type="dashed">
+          Resolve Conflicts
         </Button>
       </div>
       {data.length > 0 && !getChainLoading && (

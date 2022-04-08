@@ -1,27 +1,50 @@
 import classes from "./App.module.css";
 import "antd/dist/antd.css";
-import { Card, Tabs } from "antd";
-
-import Wallet from "./components/Wallet";
-import SendTransaction from "./components/SendTransaction";
-import Blochchain from "./components/Blockchain";
-import OpenTransactions from "./components/OpenTransactions";
+import { Card } from "antd";
+import { NavLink, Navigate, Route, Routes } from "react-router-dom";
+import WalletAndNode from "./pages/WalletAndNode";
+import Network from "./pages/Network";
 
 function App() {
-  const { TabPane } = Tabs;
+  const header = (
+    <div className={classes.header}>
+      <div>
+        <h3>Manage your blockchain</h3>
+      </div>
+      <div>
+        <NavLink
+          to="/wallet-and-node"
+          className={({ isActive }) =>
+            isActive
+              ? `${classes.route_link} ${classes.active}`
+              : classes.route_link
+          }
+        >
+          {" "}
+          Wallet & Blockchain{" "}
+        </NavLink>
+        <NavLink
+          to="/network"
+          className={({ isActive }) =>
+            isActive
+              ? `${classes.route_link} ${classes.active}`
+              : classes.route_link
+          }
+        >
+          {" "}
+          Network{" "}
+        </NavLink>
+      </div>
+    </div>
+  );
   return (
     <div className={classes.container}>
-      <Card title={"Manage your blockchain"} style={{ borderRadius: "6px" }}>
-        <Wallet />
-        <SendTransaction />
-        <Tabs>
-          <TabPane tab="Blockchain" key="1">
-            <Blochchain />
-          </TabPane>
-          <TabPane tab="Open Transactions" key="2">
-            <OpenTransactions />
-          </TabPane>
-        </Tabs>
+      <Card title={header} style={{ borderRadius: "6px" }}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/wallet-and-node" />}></Route>
+          <Route path="/wallet-and-node" element={<WalletAndNode />}></Route>
+          <Route path="/network" element={<Network />}></Route>
+        </Routes>
       </Card>
     </div>
   );

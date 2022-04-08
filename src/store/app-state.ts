@@ -9,6 +9,7 @@ export type AppState = {
   open_transactions: Transaction[];
   loadBlockchain: boolean;
   loadOpenTransactions: boolean;
+  nodes: string[];
 };
 
 const defaultState: AppState = {
@@ -16,7 +17,8 @@ const defaultState: AppState = {
   blockchain: [],
   open_transactions: [],
   loadBlockchain: false,
-  loadOpenTransactions: false
+  loadOpenTransactions: false,
+  nodes: []
 };
 
 const AppSlice = createSlice({
@@ -41,6 +43,9 @@ const AppSlice = createSlice({
     updateOpenTxRequiresUpdate: (state: AppState) => {
         state.loadOpenTransactions = !state.loadOpenTransactions
     },
+    updateNodes: (state: AppState, action: any) => {
+      state.nodes = action.payload;
+    }
   },
 });
 

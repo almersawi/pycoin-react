@@ -21,6 +21,7 @@ export default class api {
 
   mine = async () : Promise<number> => {
     const response = await this.httpClient.post('/mine');
+    console.log({response})
     return response.data?.funds;
   }
 
@@ -37,5 +38,26 @@ export default class api {
   getOpenTransactions = async () : Promise<Transaction[]> => {
     const response = await this.httpClient.get('/open_transactions');
     return response.data?.transactions;
+  }
+
+  getNodes = async () : Promise<string[]> => {
+    const response = await this.httpClient.get('/nodes');
+    return response.data?.all_nodes;
+  }
+
+  deleteNode = async (node: string) : Promise<any> => {
+    const response = await this.httpClient.delete(`/node/${node}`);
+    return response.data;
+  }
+
+  addNode = async (node: string) : Promise<any> => {
+    const response = await this.httpClient.post(`/node`, { node });
+    return response.data?.all_nodes;
+  }
+
+  resolveConflicts = async () : Promise<any> => {
+    const response = await this.httpClient.post('/resolve-conflicts');
+    console.log({response})
+    return response.data;
   }
 }

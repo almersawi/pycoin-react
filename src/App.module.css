@@ -5,6 +5,31 @@
     margin: 0 auto;
 }
 
+.header {
+    display: flex;
+    font-size: 0.85em;
+    justify-content: space-between;
+}
+
 hr {
     border: 1px dashed rgb(241, 241, 241);
+}
+
+.nav_container {
+    margin-bottom: 1rem;
+}
+
+.route_link {
+    padding: 0.5rem 1rem;
+    background-color: #eee;
+    border-radius: 0.2rem;
+    color: #333;
+    transition: all 300ms ease;
+    font-size: 13px;
+    margin-left: 0.5rem;
+}
+
+.active, .route_link:hover {
+    background-color: #333;
+    color: #fff;
 }
