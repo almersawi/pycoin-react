@@ -57,7 +57,6 @@ export default class api {
 
   resolveConflicts = async () : Promise<any> => {
     const response = await this.httpClient.post('/resolve-conflicts');
-    console.log({response})
     return response.data;
   }
 }
